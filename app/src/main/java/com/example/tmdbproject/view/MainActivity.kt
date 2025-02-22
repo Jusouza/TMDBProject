@@ -3,6 +3,7 @@ package com.example.tmdbproject.view
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tmdbproject.R
@@ -23,35 +24,44 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this) [MoviesViewModel::class.java]
+        viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
 
         setupRecyclerView()
 
-        viewModel.listMovies.observe(this) {
-            adapter.listMovies = it
+        viewModel.listMovies.observe(this) { movies ->
+            adapter.listMovies = movies
             adapter.notifyDataSetChanged()
         }
 
-        binding.filterFavorites.setOnClickListener {
+        viewModel.errorMessage.observe(this) { errorMsg ->
+            if (!errorMsg.isNullOrEmpty()) {
+                Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.filterRecently.setOnClickListener {
             viewModel.getCurrentPlayingMovies()
-            changeButtonColor("1")
+            changeButtonColor(FILTER_REC)
         }
 
         binding.filterPopulars.setOnClickListener {
             viewModel.getPopularMovies()
-            changeButtonColor("2")
+            changeButtonColor(FILTER_POP)
         }
 
         viewModel.getCurrentPlayingMovies()
     }
 
     private fun changeButtonColor(button: String) {
-        when(button){
-            "1" -> {
-                binding.filterFavorites.setCardBackgroundColor(resources.getColor(R.color.red))
+        when (button) {
+            FILTER_REC -> {
+                binding.filterRecently.setCardBackgroundColor(resources.getColor(R.color.red))
+                binding.filterPopulars.setCardBackgroundColor(resources.getColor(R.color.black))
             }
-            "2" -> {
+
+            FILTER_POP -> {
                 binding.filterPopulars.setCardBackgroundColor(resources.getColor(R.color.red))
+                binding.filterRecently.setCardBackgroundColor(resources.getColor(R.color.black))
             }
         }
     }
@@ -63,5 +73,8 @@ class MainActivity : AppCompatActivity() {
         binding.listItems.adapter = adapter
     }
 
-
+    companion object {
+        const val FILTER_REC = "1"
+        const val FILTER_POP = "2"
+    }
 }

@@ -2,5 +2,5 @@
     <string name="app_name">TMDBProject</string>
     <string name="app_title">Para Juliana</string>
     <string name="filter_popular">Populares</string>
-    <string name="filter_favorites">Favoritos</string>
+    <string name="filter_recently">Favoritos</string>
 </resources>

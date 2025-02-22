@@ -14,7 +14,7 @@ import com.example.tmdbproject.core.Constants
 import com.example.tmdbproject.model.MoviesModel
 
 class AdapterMovies(
-    val context: Context,
+    private val context: Context,
     var listMovies: List<MoviesModel>
 ): RecyclerView.Adapter<AdapterMovies.ViewHolder>() {
 
