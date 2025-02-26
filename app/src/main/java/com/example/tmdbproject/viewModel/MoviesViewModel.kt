@@ -22,7 +22,7 @@ class MoviesViewModel : ViewModel() {
     fun getCurrentPlayingMovies() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = RetrofitClient.webService.getCurrentPlayingMovies(Constants.API_KEY)
+                val response = RetrofitClient.webService.getCurrentPlayingMovies(BuildConfig.API_KEY)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         _listMovies.value = response.body()?.results?.sortedByDescending { it.releaseDate }
@@ -41,7 +41,7 @@ class MoviesViewModel : ViewModel() {
     fun getPopularMovies() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = RetrofitClient.webService.getPopularMovies(Constants.API_KEY)
+                val response = RetrofitClient.webService.getPopularMovies(BuildConfig.API_KEY)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         _listMovies.value = response.body()?.results?.sortedByDescending { it.releaseDate }
